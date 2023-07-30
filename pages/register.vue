@@ -141,6 +141,6 @@ const handleRegister = async () => {
 };
 
 if (user) {
-  navigateTo('/');
+  useRouter().push('/');
 }
 </script>

@@ -114,6 +114,6 @@ const handleLogin = async () => {
 };
 
 if (user) {
-  navigateTo('/');
+  useRouter().push('/');
 }
 </script>

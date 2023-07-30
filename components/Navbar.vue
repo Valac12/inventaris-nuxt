@@ -21,7 +21,8 @@
                 />
               </UTooltip>
               <span class="text-sm mr-2">or</span>
-              <UKbd>⌘</UKbd>
+              <UKbd v-if="OS === 'Macintosh'">⌘</UKbd>
+              <UKbd v-if="OS === 'Windows OS'">Ctrl</UKbd>
               <UKbd>K</UKbd>
             </div>
 
@@ -156,4 +157,11 @@ const items = [
     },
   ],
 ];
+
+const OS = ref('');
+if (navigator.userAgent.indexOf('Win') != -1) OS.value = 'Windows OS';
+if (navigator.userAgent.indexOf('Mac') != -1) OS.value = 'Macintosh';
+if (navigator.userAgent.indexOf('Linux') != -1) OS.value = 'Linux OS';
+if (navigator.userAgent.indexOf('Android') != -1) OS.value = 'Android OS';
+if (navigator.userAgent.indexOf('like Mac') != -1) OS.value = 'iOS';
 </script>
