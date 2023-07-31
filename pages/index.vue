@@ -31,16 +31,16 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '../stores/authStore';
+definePageMeta({
+  middleware: 'auth',
+  layout: 'default',
+});
 
 useHead({
   title: 'Invoice App',
 });
 
-definePageMeta({
-  middleware: 'auth',
-  layout: 'default',
-});
+import { useAuthStore } from '../stores/authStore';
 
 const authStore = useAuthStore();
 

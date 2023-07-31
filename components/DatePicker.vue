@@ -37,14 +37,16 @@ const attrs = [
 </script>
 
 <template>
-  <VCalendarDatePicker
-    v-model="date"
-    transparent
-    borderless
-    :attributes="attrs"
-    :is-dark="isDark"
-    title-position="left"
-    trim-weeks
-    :first-day-of-week="2"
-  />
+  <ClientOnly>
+    <VCalendarDatePicker
+      v-model="date"
+      transparent
+      borderless
+      :attributes="attrs"
+      :is-dark="isDark"
+      title-position="left"
+      trim-weeks
+      :first-day-of-week="2"
+    />
+  </ClientOnly>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <Navbar :isOpen="authStore.isOpen" @open-sidebar="openSidebar" />
-  <UContainer class="lg:my-16" as="main">
+  <UContainer class="lg:my-16" as="div">
     <NuxtPage>
       <slot />
     </NuxtPage>

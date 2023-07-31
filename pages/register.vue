@@ -84,8 +84,6 @@ useHead({
 });
 
 const supabase = useSupabaseAuthClient();
-const user = useSupabaseUser();
-const toast = useToast();
 
 const loading = ref(false);
 const email = ref('');
@@ -108,25 +106,19 @@ const handleRegister = async () => {
       password: password.value,
     });
 
-    if (error) {
-      isError.value = true;
-      errMsg.value = error.message;
-      setTimeout(() => {
-        errMsg.value = '';
-      }, 5000);
-      console.log(error);
-      return null;
+    if (data) {
+      toast.add({
+        id: 'check_email',
+        title: 'Success! Please check your email',
+        description: 'Check your email to confirm your authentication.',
+        icon: 'i-heroicons-check-circle',
+        timeout: 5000,
+        color: 'green',
+      });
     }
-    toast.add({
-      id: 'check_email',
-      title: 'Success! Please check your email',
-      description: 'Check your email to confirm your authentication.',
-      icon: 'i-heroicons-check-circle',
-      timeout: 5000,
-      color: 'green',
-    });
+
+    if (error) throw error;
   } catch (error) {
-    console.log(error);
     toast.add({
       id: 'failed',
       title: 'Failed!',
@@ -139,8 +131,4 @@ const handleRegister = async () => {
     loading.value = false;
   }
 };
-
-if (user) {
-  useRouter().push('/');
-}
 </script>

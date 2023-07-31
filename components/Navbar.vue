@@ -39,14 +39,7 @@
             />
 
             <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
-              <UAvatar
-                :src="
-                  avatar_url
-                    ? avatar_url
-                    : 'https://avatars.githubusercontent.com/u/739984?v=4'
-                "
-                :alt="data?.full_name"
-              />
+              <UAvatar :src="avatar_url ? avatar_url : null" :alt="full_name" />
 
               <template #account="{ item }">
                 <div class="text-left">
@@ -84,6 +77,8 @@ const router = useRouter();
 const client = useSupabaseAuthClient();
 
 const avatar_url = ref('');
+const full_name = ref('');
+const OS = ref('');
 
 let { data } = await supabase
   .from('profiles')
@@ -91,11 +86,31 @@ let { data } = await supabase
   .eq('id', user.value.id)
   .single();
 
-const { data: fetchAvatar, error } = await supabase.storage
+if (!data) {
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
+full_name.value = data.full_name;
+
+const { data: avatar, error } = supabase.storage
   .from('avatars')
-  .download(data.avatar_url);
-if (error) throw error;
-avatar_url.value = URL.createObjectURL(fetchAvatar);
+  .getPublicUrl(data.avatar_url);
+
+if (!avatar) {
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
+avatar_url.value = avatar.publicUrl;
+
+onMounted(async () => {
+  if (process.client) {
+    // to check what OS User is using
+
+    if (navigator.userAgent.indexOf('Win') != -1) OS.value = 'Windows OS';
+    if (navigator.userAgent.indexOf('Mac') != -1) OS.value = 'Macintosh';
+    if (navigator.userAgent.indexOf('Linux') != -1) OS.value = 'Linux OS';
+    if (navigator.userAgent.indexOf('Android') != -1) OS.value = 'Android OS';
+    if (navigator.userAgent.indexOf('like Mac') != -1) OS.value = 'iOS';
+  }
+});
 
 const colorMode = useColorMode();
 
@@ -157,11 +172,4 @@ const items = [
     },
   ],
 ];
-
-const OS = ref('');
-if (navigator.userAgent.indexOf('Win') != -1) OS.value = 'Windows OS';
-if (navigator.userAgent.indexOf('Mac') != -1) OS.value = 'Macintosh';
-if (navigator.userAgent.indexOf('Linux') != -1) OS.value = 'Linux OS';
-if (navigator.userAgent.indexOf('Android') != -1) OS.value = 'Android OS';
-if (navigator.userAgent.indexOf('like Mac') != -1) OS.value = 'iOS';
 </script>

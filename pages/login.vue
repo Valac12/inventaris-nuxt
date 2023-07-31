@@ -15,7 +15,6 @@
             label="Email Address"
             class="space-y-2 w-full"
             help="We will never share your email with anyone else."
-            :error="errMsg"
           >
             <UInput
               placeholder="youremail@gmail.com"
@@ -72,8 +71,6 @@ useHead({
 });
 
 const supabase = useSupabaseAuthClient();
-const toast = useToast();
-const user = useSupabaseUser();
 
 const loading = ref(false);
 const email = ref('');
@@ -89,15 +86,9 @@ const handleLogin = async () => {
       password: password.value,
     });
 
-    if (error) {
-      isError.value = true;
-      errMsg.value = error.message;
-      setTimeout(() => {
-        errMsg.value = '';
-      }, 5000);
-      console.log(error);
-      return null;
-    }
+    if (error) throw error;
+
+    useRouter().push('/');
   } catch (error) {
     console.log(error);
     toast.add({
@@ -112,8 +103,4 @@ const handleLogin = async () => {
     loading.value = false;
   }
 };
-
-if (user) {
-  useRouter().push('/');
-}
 </script>
