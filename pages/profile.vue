@@ -59,7 +59,6 @@ useHead({
 });
 
 const authStore = useAuthStore();
-
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const toast = useToast();
@@ -78,6 +77,8 @@ let { data } = await supabase
   .single();
 
 if (data) {
+  username.value = data.username;
+  full_name.value = data.full_name;
   authStore.user = {
     username: data.username,
     full_name: data.full_name,
@@ -93,7 +94,7 @@ const updateProfile = async () => {
 
     const updates = {
       id: user.value.id,
-      username: username.value.toLowerCase(),
+      username: username.value.toLowerCase().trim(),
       full_name: full_name.value,
       avatar_url: avatar_url.value,
       updated_at: new Date(),

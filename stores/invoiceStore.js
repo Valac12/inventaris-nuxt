@@ -12,8 +12,6 @@ export const useInvoiceStore = defineStore('invoice', {
         id: uuidv4(),
         itemName: '',
         quantity: 0,
-        pricePerUnit: 0,
-        totalPrice: 0,
       });
     },
 
@@ -21,23 +19,6 @@ export const useInvoiceStore = defineStore('invoice', {
       this.invoiceItemList = this.invoiceItemList.filter(
         (item) => item.id !== id
       );
-    },
-
-    sumInvoiceTotal() {
-      this.invoiceTotal = 0;
-      this.invoiceItemList.forEach((invoice) => {
-        this.invoiceTotal += invoice.totalPrice;
-      });
-    },
-
-    async addInvoiceToDatabase(details) {
-      const {} = details;
-
-      if (this.invoiceItemList.length <= 0) {
-        throw new Error('Please make sure no field is empty');
-      }
-
-      this.sumInvoiceTotal();
     },
   },
 });

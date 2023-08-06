@@ -1,0 +1,29 @@
+fungsi lain yang menggunakan 2 tabel(penjualan, penjualan_menu) untuk menambahkan invoices di components/InvoiceModal.vue
+
+const items = invoiceStore.invoiceItemList.map((invoice) => {
+      return {
+        menu_id: invoice.itemName.id,
+        kuantitas: invoice.quantity,
+      };
+    });
+  
+const { data: penjualan, error: errorPenjualan } = await supabase
+      .from('penjualan')
+      .insert({
+        kustomer: invoiceItems.customer,
+        kustomer_nomor_hp: invoiceItems.customerPhone,
+        pembayaran: selectedPayment.value,
+      })
+      .select('id');
+if (errorPenjualan) throw errorPenjualan;
+
+const { error: errorPenjualanMenu } = await supabase
+      .from('penjualan_menu')
+      .insert(
+        items.map((item) => ({
+          ...item,
+          penjualan_id: penjualan[0].id,
+        }))
+      )
+      .select('*');
+    if (errorPenjualanMenu) throw errorPenjualanMenu;

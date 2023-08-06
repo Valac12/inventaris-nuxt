@@ -8,6 +8,11 @@
           </NuxtLink>
 
           <div class="flex items-center gap-x-4">
+            <NuxtLink to="/" class=""> invoices </NuxtLink>
+            <NuxtLink to="/users" class=""> users </NuxtLink>
+          </div>
+
+          <div class="flex items-center gap-x-4">
             <div
               class="flex items-center justify-center shadow rounded-md pr-2"
             >
@@ -39,7 +44,7 @@
             />
 
             <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
-              <UAvatar :src="avatar_url ? avatar_url : null" :alt="full_name" />
+              <UAvatar :src="avatar_url" :alt="full_name" />
 
               <template #account="{ item }">
                 <div class="text-left">
@@ -74,7 +79,7 @@ const props = defineProps(['isOpen']);
 const emit = defineEmits(['open-sidebar']);
 
 const router = useRouter();
-const client = useSupabaseAuthClient();
+const userClient = useSupabaseUser();
 
 const avatar_url = ref('');
 const full_name = ref('');
@@ -87,7 +92,7 @@ let { data } = await supabase
   .single();
 
 if (!data) {
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  throw createError({ statusCode: 404, statusMessage: 'Data Not Found' });
 }
 full_name.value = data.full_name;
 
@@ -96,19 +101,16 @@ const { data: avatar, error } = supabase.storage
   .getPublicUrl(data.avatar_url);
 
 if (!avatar) {
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+  console.log('avatr not found, so using initial of full name');
 }
-avatar_url.value = avatar.publicUrl;
+avatar_url.value = avatar.publicUrl ? avatar.publicUrl : null;
 
-onMounted(async () => {
+onMounted(() => {
   if (process.client) {
-    // to check what OS User is using
-
+    // to check which OS User is currently used
     if (navigator.userAgent.indexOf('Win') != -1) OS.value = 'Windows OS';
     if (navigator.userAgent.indexOf('Mac') != -1) OS.value = 'Macintosh';
-    if (navigator.userAgent.indexOf('Linux') != -1) OS.value = 'Linux OS';
     if (navigator.userAgent.indexOf('Android') != -1) OS.value = 'Android OS';
-    if (navigator.userAgent.indexOf('like Mac') != -1) OS.value = 'iOS';
   }
 });
 
@@ -128,6 +130,13 @@ function openSidebar() {
 }
 
 const items = [
+  [
+    {
+      label: full_name.value,
+      slot: 'account',
+      disabled: true,
+    },
+  ],
   [
     {
       label: 'Profile',
@@ -163,11 +172,13 @@ const items = [
   [
     {
       label: 'Logout',
-      icon: 'i-heroicons-arrow-right-circle-20-solid',
+      icon: 'i-heroicons-arrow-left-on-rectangle',
       shortcuts: ['⌘', 'D'],
-      click: () => {
-        client.auth.signOut();
-        router.push('/');
+      click: async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        userClient.value = null;
+        router.push('/login');
       },
     },
   ],

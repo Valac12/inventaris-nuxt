@@ -70,17 +70,18 @@ useHead({
   title: 'Login Page',
 });
 
-const supabase = useSupabaseAuthClient();
+const router = useRouter();
+const supabase = useSupabaseClient();
 
 const loading = ref(false);
 const email = ref('');
 const password = ref('');
 const isError = ref(false);
-const errMsg = ref('');
 
 const handleLogin = async () => {
   try {
     loading.value = true;
+
     const { error } = await supabase.auth.signInWithPassword({
       email: email.value,
       password: password.value,
@@ -88,17 +89,9 @@ const handleLogin = async () => {
 
     if (error) throw error;
 
-    useRouter().push('/');
+    router.push('/');
   } catch (error) {
     console.log(error);
-    toast.add({
-      id: 'failed',
-      title: 'Failed!',
-      description: 'Something went wrong :(',
-      icon: 'i-heroicons-check-circle',
-      timeout: 5000,
-      color: 'red',
-    });
   } finally {
     loading.value = false;
   }

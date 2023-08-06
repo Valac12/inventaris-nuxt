@@ -1,14 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
   modules: ['@nuxthq/ui', '@pinia/nuxt', '@nuxtjs/supabase'],
-  runtimeConfig: {
-    public: {
-      supabase: {
-        url: process.env.SUPABASE_URL,
-        key: process.env.SUPABASE_KEY,
-      },
-    },
+  supabase: {
+    serviceKey: process.env.SUPABASE_SERVICE_KEY,
+    url: process.env.SUPABASE_URL,
+    key: process.env.SUPABASE_KEY,
   },
   ui: {
     global: true,
@@ -23,5 +19,11 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
     },
     pageTransition: { name: 'page', mode: 'out-in' },
+  },
+  runtimeConfig: {
+    midtransServerKey: process.env.NUXT_MIDTRANS_SERVER_KEY,
+    public: {
+      midtransClientKey: process.env.NUXT_MIDTRANS_CLIENT_KEY,
+    },
   },
 });
