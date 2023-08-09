@@ -5,11 +5,7 @@
         <div class="dark:bg-gray-800 shadow-md rounded-3xl p-4">
           <div class="flex-none lg:flex">
             <div class="h-full w-full lg:h-48 lg:w-48 lg:mb-0 mb-3">
-              <img
-                src="~/assets/img/diet.png"
-                alt="menu foto"
-                class="w-full object-scale-down lg:object-cover lg:h-48 rounded-2xl"
-              />
+              <img src="~/assets/img/diet.png" alt="menu foto" class="w-full object-scale-down lg:object-cover lg:h-48 rounded-2xl" />
             </div>
             <div class="flex-auto ml-3 justify-evenly py-2">
               <div class="flex flex-wrap">
@@ -25,18 +21,14 @@
                 <div class="flex-1 inline-flex items-center text-gray-500">
                   <p>
                     Stock:
-                    <span class="font-bold">{{ data.stock }} </span>&nbsp;{{
-                      data.satuan.unit_name
-                    }}
+                    <span class="font-bold">{{ data.stock }} </span>&nbsp;{{ data.satuan.unit_name }}
                   </p>
                 </div>
                 <div class="flex-1 inline-flex items-center">
-                  <p class="text-xl font-semibold">
-                    Rp. {{ data.harga.toLocaleString('id-ID', options) }}
-                  </p>
+                  <p class="text-xl font-semibold">Rp. {{ data.harga.toLocaleString("id-ID", options) }}</p>
                 </div>
               </div>
-              <div v-if="user.email === 'auliamedina25@gmail.com'">
+              <div v-if="user.email === 'nomorsaya2@gmail.com'">
                 <div class="flex p-4 pb-2 border-t border-gray-200"></div>
                 <div class="flex gap-x-2 justify-between text-sm font-medium">
                   <UpdateMenuModal :data="data" />
@@ -53,20 +45,20 @@
 <script setup>
 definePageMeta({
   pageTransition: {
-    name: 'rotate',
+    name: "rotate",
   },
-  middleware: 'auth',
-  layout: 'default',
-  name: 'MenuDetails',
+  middleware: "auth",
+  layout: "default",
+  name: "MenuDetails",
 });
 
 useHead({
-  title: 'Edit Menu Page',
+  title: "Edit Menu Page",
 });
 const user = useSupabaseUser();
 const { id } = useRoute().params;
 const options = {
-  style: 'decimal',
+  style: "decimal",
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 };
