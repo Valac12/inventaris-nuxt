@@ -9,16 +9,7 @@
         >
       </div>
 
-      <div class="flex items-center justify-center gap-x-4">
-        <USelectMenu
-          v-model="selected"
-          :options="menuTypes"
-          placeholder="Filter by status"
-          variant="none"
-        />
-
-        <MenuModal />
-      </div>
+      <MenuModal />
     </div>
 
     <Table
@@ -85,9 +76,6 @@ useHead({
 });
 
 const supabase = useSupabaseClient();
-
-const menuTypes = ['Minuman', 'Makanan'];
-const selected = ref(menuTypes[0]);
 const currentPage = ref(1);
 const postsPerPage = ref(5);
 const data = ref([]);

@@ -9,22 +9,13 @@
         >
       </div>
 
-      <div class="flex items-center justify-center gap-x-4">
-        <USelectMenu
-          v-model="selected"
-          :options="invoiceTypes"
-          placeholder="Filter by status"
-          variant="none"
-        />
-
-        <UButton
-          label="Add Invoice"
-          :ui="{ rounded: 'rounded-full' }"
-          size="lg"
-          icon="i-mdi-plus-circle"
-          @click="authStore.isOpen = !authStore.isOpen"
-        />
-      </div>
+      <UButton
+        label="Add Invoice"
+        :ui="{ rounded: 'rounded-full' }"
+        size="lg"
+        icon="i-mdi-plus-circle"
+        @click="authStore.isOpen = !authStore.isOpen"
+      />
     </div>
 
     <Table
@@ -64,9 +55,6 @@ import { useAuthStore } from '../stores/authStore';
 
 const authStore = useAuthStore();
 const supabase = useSupabaseClient();
-
-const invoiceTypes = ['Cash', 'Credit Card', 'Debit Card', 'Paypal'];
-const selected = ref(invoiceTypes[0]);
 const currentPage = ref(1);
 const postsPerPage = ref(5);
 const data = ref([]);

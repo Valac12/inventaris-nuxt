@@ -1,109 +1,108 @@
 <template>
-  <div>
-    <UButton
-      icon="i-heroicons-pencil-square"
-      color="orange"
-      square
-      size="lg"
-      variant="ghost"
-      @click="isOpen = !isOpen"
-    />
-    <UButton
-      icon="i-heroicons-trash"
-      color="red"
-      size="lg"
-      square
-      variant="ghost"
-    />
+  <UButton
+    icon="i-heroicons-trash"
+    label="Delete Menu"
+    color="gray"
+    class="border flex-1"
+    :ui="{ rounded: 'rounded-full' }"
+    variant="ghost"
+  />
+  <UButton
+    class="px-3 flex-1 inline-flex justify-center"
+    :ui="{ rounded: 'rounded-full' }"
+    @click="isOpen = !isOpen"
+  >
+    <UIcon name="i-heroicons-pencil-square" class="text-lg" />
+    Edit Menu
+  </UButton>
 
-    <!-- Modal add new menu -->
-    <UModal v-model="isOpen">
-      <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-        <template #header>
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Update Menu</h2>
-            <UButton
-              color="gray"
-              variant="ghost"
-              icon="i-heroicons-x-mark-20-solid"
-              class="-my-1"
-              @click="isOpen = false"
-            />
-          </div>
-        </template>
-
-        <!-- Content -->
-        <form @submit.prevent="handleSubmit" class="flex flex-col gap-y-4">
-          <UFormGroup name="name" label="Nama Menu">
-            <UInput
-              class="py-2 rounded"
-              v-model="namaMenu"
-              placeholder="Sate"
-              :disabled="loading"
-            />
-          </UFormGroup>
-
-          <UFormGroup name="price" label="Harga">
-            <UInput
-              class="py-2 rounded"
-              v-model="harga"
-              placeholder="Rp. 4000"
-              :disabled="loading"
-            />
-          </UFormGroup>
-
-          <div class="flex gap-x-4 items-center">
-            <span>Kategori:</span>
-            <URadio label="Makanan" v-model="kategori_id" value="1" />
-            <URadio label="Minuman" v-model="kategori_id" value="2" />
-          </div>
-
-          <UFormGroup name="stock" label="Stock">
-            <UInput
-              class="py-2 rounded"
-              v-model="stock"
-              placeholder="60"
-              :disabled="loading"
-            />
-          </UFormGroup>
-
-          <UFormGroup name="satuan_id" label="Satuan Unit">
-            <USelectMenu
-              v-model="selectedUnit"
-              :options="units"
-              placeholder="Pilih satuan unit"
-              value-attribute="id"
-              option-attribute="name"
-            >
-              <template #label>
-                {{ selectedUnit.name }}
-              </template>
-            </USelectMenu>
-          </UFormGroup>
-
+  <!-- Modal add new menu -->
+  <UModal v-model="isOpen">
+    <UCard :ui="{ divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Update Menu</h2>
           <UButton
-            type="submit"
-            label="Update"
-            color="primary"
-            class="py-2 px-6"
-            block
-            :ui="{ rounded: 'rounded' }"
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="-my-1"
+            @click="isOpen = false"
+          />
+        </div>
+      </template>
+
+      <!-- Content -->
+      <form @submit.prevent="handleSubmit" class="flex flex-col gap-y-4">
+        <UFormGroup name="name" label="Nama Menu">
+          <UInput
+            class="py-2 rounded"
+            v-model="namaMenu"
+            placeholder="Sate"
             :disabled="loading"
           />
-          <UButton
-            type="reset"
-            label="Reset"
-            color="primary"
-            variant="outline"
-            class="py-2 px-6"
-            block
-            :ui="{ rounded: 'rounded' }"
+        </UFormGroup>
+
+        <UFormGroup name="price" label="Harga">
+          <UInput
+            class="py-2 rounded"
+            v-model="harga"
+            placeholder="Rp. 4000"
             :disabled="loading"
           />
-        </form>
-      </UCard>
-    </UModal>
-  </div>
+        </UFormGroup>
+
+        <div class="flex gap-x-4 items-center">
+          <span>Kategori:</span>
+          <URadio label="Makanan" v-model="kategori_id" value="1" />
+          <URadio label="Minuman" v-model="kategori_id" value="2" />
+        </div>
+
+        <UFormGroup name="stock" label="Stock">
+          <UInput
+            class="py-2 rounded"
+            v-model="stock"
+            placeholder="60"
+            :disabled="loading"
+          />
+        </UFormGroup>
+
+        <UFormGroup name="satuan_id" label="Satuan Unit">
+          <USelectMenu
+            v-model="selectedUnit"
+            :options="units"
+            placeholder="Pilih satuan unit"
+            value-attribute="id"
+            option-attribute="name"
+          >
+            <template #label>
+              {{ selectedUnit.name }}
+            </template>
+          </USelectMenu>
+        </UFormGroup>
+
+        <UButton
+          type="submit"
+          label="Update"
+          color="primary"
+          class="py-2 px-6"
+          block
+          :ui="{ rounded: 'rounded' }"
+          :disabled="loading"
+        />
+        <UButton
+          type="reset"
+          label="Reset"
+          color="primary"
+          variant="outline"
+          class="py-2 px-6"
+          block
+          :ui="{ rounded: 'rounded' }"
+          :disabled="loading"
+        />
+      </form>
+    </UCard>
+  </UModal>
 </template>
 
 <script setup>
