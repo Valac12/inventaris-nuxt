@@ -26,7 +26,7 @@ useHead({
   title: `Invoice Details`, // get the meta data from parent
   script: [
     {
-      src: 'https://app.sandbox.midtrans.com/snap/snap.js',
+      src: 'https://app.sandbox.midtrans.com/snap/snap.js', // get rid the 'sandbox' from the url if want to switched in to production mode
       'data-client-key': config.public.midtransClientKey,
     },
   ],
@@ -42,15 +42,17 @@ definePageMeta({
 
 // get id from params and fetch specific invoice
 const { id } = useRoute().params;
+const toast = useToast();
+// fetch data from server/api
 const { data: selling } = await useFetch(`/api/invoices/${id}`);
 
 // sum the total price in item_list(JSON type) column
-const item_list = selling.value.item_list;
 let totalPrice = 0;
-for (const item of item_list) {
+for (const item of selling.value.item_list) {
   totalPrice += item.quantity * item.price;
 }
 
+// send the invoice data to generate token for midtrans-client SNAP
 const sendDataToGetToken = async () => {
   const { data: payment } = await useFetch(`/api/invoices/pay-invoice`, {
     method: 'post',
@@ -102,13 +104,22 @@ const sendDataToGetToken = async () => {
   return payment;
 };
 
+// SNAP popped-up after click 'Bayar' in the front-end
 const paymentSnap = async () => {
   const getToken = await sendDataToGetToken();
   let token = getToken.value;
 
   snap.pay(token, {
     onSuccess: function (result) {
-      alert(result.status_message);
+      useRouter().push('/');
+      toast.add({
+        id: result.order_id,
+        title: `${result.channel_response_message}`,
+        description: result.status_message,
+        timeout: 5000,
+        icon: 'i-heroicons-check-circle',
+        color: 'green',
+      });
     },
     onError: function (result) {
       alert(result.status_message);

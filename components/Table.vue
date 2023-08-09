@@ -1,20 +1,13 @@
 <template>
   <ClientOnly>
-    <div v-if="props.selling.length > 0">
-      <div v-for="(item, index) in paginatedItems" :key="index">
-        <NuxtLink
-          :to="{ name: 'InvoiceDetails', params: { id: item.id } }"
-          class="flex items-center font-bold justify-between px-8 py-7 mb-4 rounded-xl w-full bg-slate-100 dark:bg-gray-800/90 dark:text-white"
-        >
-          <TableRow :data="item" />
-        </NuxtLink>
-      </div>
+    <div v-if="props.data.length > 0">
+      <slot />
 
       <UPagination
         v-model="currentPage"
         @update:model-value="$emit('page-changed', currentPage)"
         :page-count="props.postsPerPage"
-        :total="props.selling.length"
+        :total="props.data.length"
         :max="5"
         :ui="{
           rounded: 'first-of-type:rounded-s-md last-of-type:rounded-e-md',
@@ -53,15 +46,15 @@
         class="w-80 h-80 mx-auto"
       />
       <span class="text-3xl font-semibold mx-auto text-gray-600"
-        >Tidak ada nota transaksi yang terekam.</span
+        >Tidak ada data yang tersimpan.</span
       >
     </div>
   </ClientOnly>
 </template>
 
 <script setup>
-const props = defineProps(['postsPerPage', 'selling', 'pending']);
-const emit = defineEmits(['page-changed', 'prev-page', 'next-page']);
+const props = defineProps(['postsPerPage', 'data', 'pending']);
+const emit = defineEmits(['page-changed']);
 const currentPage = ref(1); // current page number, starts from one (1).
 
 const prevPage = () => {
@@ -76,13 +69,7 @@ const nextPage = () => {
   }
 };
 
-const paginatedItems = computed(() => {
-  const startIndex = (currentPage.value - 1) * props.postsPerPage;
-  const endIndex = startIndex + props.postsPerPage;
-  return props.selling.slice(startIndex, endIndex);
-});
-
 const totalPages = computed(() =>
-  Math.ceil(props.selling.length / props.postsPerPage)
+  Math.ceil(props.data.length / props.postsPerPage)
 );
 </script>

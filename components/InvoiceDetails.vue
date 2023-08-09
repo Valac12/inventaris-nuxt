@@ -13,9 +13,11 @@
               v-for="(item, index) in props.data.item_list"
               :key="index"
             >
-              <span class="font-medium text-gray-500 dark:text-gray-400">{{
-                item.name
-              }}</span>
+              <NuxtLink
+                :to="{ name: 'MenuDetails', params: { id: item.menu_id } }"
+                class="font-medium text-gray-500 dark:text-gray-400 hover:underline"
+                >{{ item.name }}</NuxtLink
+              >
             </div>
           </div>
 

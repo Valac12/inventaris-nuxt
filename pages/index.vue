@@ -18,7 +18,7 @@
         />
 
         <UButton
-          label="New Invoice"
+          label="Add Invoice"
           :ui="{ rounded: 'rounded-full' }"
           size="lg"
           icon="i-mdi-plus-circle"
@@ -28,11 +28,24 @@
     </div>
 
     <Table
-      :selling="data"
+      :data="data"
       :pending="pending"
       :postsPerPage="postsPerPage"
       @page-changed="refetch"
-    />
+    >
+      <div v-for="(item, index) in paginatedItems" :key="index">
+        <NuxtLink
+          :to="{ name: 'InvoiceDetails', params: { id: item.id } }"
+          class="flex items-center font-bold justify-between px-8 py-7 mb-4 rounded-xl w-full bg-slate-100 dark:bg-gray-800/90 dark:text-white"
+        >
+          <TableRow
+            :data="item"
+            :title="item.customer"
+            :type="item.payment_type"
+          />
+        </NuxtLink>
+      </div>
+    </Table>
   </section>
 </template>
 
@@ -66,6 +79,12 @@ const { data: selling, error } = await supabase
 
 if (error) throw error;
 data.value = selling;
+
+const paginatedItems = computed(() => {
+  const startIndex = (currentPage.value - 1) * postsPerPage.value;
+  const endIndex = startIndex + postsPerPage.value;
+  return data.value.slice(startIndex, endIndex);
+});
 
 const refetch = async (pageNumber) => {
   currentPage.value = pageNumber;

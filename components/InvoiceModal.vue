@@ -247,6 +247,7 @@ async function handleSubmit() {
       description: 'Data transaksi ditampilkan di halaman utama',
       icon: 'i-heroicons-check-circle',
       timeout: 5000,
+      color: 'green',
     });
     useRouter().push('/');
   } catch (error) {

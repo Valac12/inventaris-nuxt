@@ -7,14 +7,14 @@
             <img src="~/assets/img/logo.png" alt="logo" class="w-12 h-12" />
           </NuxtLink>
 
-          <div class="flex items-center gap-x-4">
-            <NuxtLink to="/" class=""> invoices </NuxtLink>
-            <NuxtLink to="/users" class=""> users </NuxtLink>
+          <div class="hidden sm:flex items-center gap-x-4">
+            <NuxtLink to="/" class=""> Invoice </NuxtLink>
+            <NuxtLink to="/menu" class=""> Menu </NuxtLink>
           </div>
 
           <div class="flex items-center gap-x-4">
             <div
-              class="flex items-center justify-center shadow rounded-md pr-2"
+              class="hidden sm:flex items-center justify-center shadow rounded-md pr-2"
             >
               <UTooltip text="Click to create new invoice">
                 <UButton

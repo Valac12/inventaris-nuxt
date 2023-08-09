@@ -26,4 +26,7 @@ export default defineNuxtConfig({
       midtransClientKey: process.env.NUXT_MIDTRANS_CLIENT_KEY,
     },
   },
+  nitro: {
+    preset: 'node-server',
+  },
 });

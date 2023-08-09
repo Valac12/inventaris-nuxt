@@ -43,12 +43,8 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '../stores/authStore';
-
 const props = defineProps(['path']);
 const { path } = toRefs(props);
-
-const authStore = useAuthStore();
 
 const emit = defineEmits(['update:path', 'upload']);
 
